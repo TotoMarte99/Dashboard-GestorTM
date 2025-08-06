@@ -1,0 +1,290 @@
+﻿@page "/historial"
+@using System.Text.Json
+@inject SalesService SalesService
+@inject IJSRuntime JS
+@inject HttpClient Http
+@using System.Text;
+@inject IJSRuntime JSRuntime
+
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<h4>Filtro por Mes y Año</h4>
+<div class="row mb-4">
+    <div class="col-md-3">
+        <label>Mes</label>
+        <InputNumber @bind-Value="mesSeleccionado" class="form-control" Min="1" Max="12" />
+    </div>
+    <div class="col-md-3">
+        <label>Año</label>
+        <InputNumber @bind-Value="anioSeleccionado" class="form-control" Min="2020" Max="@DateTime.Now.Year" />
+    </div>
+    <div class="col-md-3 d-flex align-items-end">
+        <button class="btn btn-primary" @onclick="FiltrarMetricas">Filtrar</button>
+    </div>
+</div>
+
+@if (ventasFiltradas != null && ventasFiltradas.Any())
+{
+    <hr />
+    <h4>Métricas de Ventas (@mesSeleccionado/@anioSeleccionado)</h4>
+    <div class="row mt-3">
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Ventas Totales</h5>
+                    <p class="display-6">@ventasFiltradas.Count</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Ingresos Totales</h5>
+                    <p class="display-6 text-success">
+                        @(ventasFiltradas.Any(v => v.TotalVenta.HasValue)
+                            ? ventasFiltradas.Sum(v => v.TotalVenta ?? 0).ToString("C2")
+                            : "N/A")
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Promedio por Venta</h5>
+                    <p class="display-6 text-primary">
+                        @(ventasFiltradas.Any(v => v.TotalVenta.HasValue)
+                            ? ventasFiltradas.Average(v => v.TotalVenta ?? 0).ToString("C2")
+                            : "N/A")
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>No hay ventas para el período seleccionado.</p>
+}
+<br/>
+
+<h2>Historial de Ventas</h2>
+
+
+@if (ventas != null && ventas.Any())
+{
+    <hr />
+    <h4>Métricas de Ventas</h4>
+
+    <div class="row mt-3">
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Ventas Totales</h5>
+                    <p class="display-6">@ventas.Count</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Ingresos Totales</h5>
+                    <p class="display-6 text-success">
+                        @(ventas.Where(v => v.TotalVenta.HasValue)
+                                .Sum(v => v.TotalVenta.Value)
+                                .ToString("C"))
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Ingresos Promedio</h5>
+                    <p class="display-6 text-secondary">
+                        @(ventas.Where(v => v.TotalVenta.HasValue).Any()
+                                ? ventas.Where(v => v.TotalVenta.HasValue)
+                                .Average(v => v.TotalVenta.Value)
+                                .ToString("C")
+                                : "N/A")
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Última Venta</h5>
+                    <p class="display-6 text-info">
+                        @(ventas.OrderByDescending(v => v.Fecha)
+                                .FirstOrDefault()?.Fecha.ToShortDateString() ?? "-")
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<br/>
+<br/>
+
+@if (ventas == null)
+{
+    <p><em>Cargando historial de ventas...</em></p>
+}
+
+else if (ventas.Count == 0)
+{
+    <p>No hay ventas registradas aún.</p>
+}
+else
+{
+    <div class="list-group">
+        @foreach (var venta in ventas)
+        {
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Venta ID: @venta.Id</h5>
+                    <strong>Cliente:</strong> @venta.ClienteNombre <br />
+                    @if (!string.IsNullOrEmpty(venta.ClienteTelefono))
+                    {
+                        <strong>Teléfono:</strong> @venta.ClienteTelefono <br />
+                    }
+                    @if (!string.IsNullOrEmpty(venta.ClienteEmail))
+                    {
+                        <strong>Email:</strong> @venta.ClienteEmail <br />
+                    }
+                    @if (!string.IsNullOrEmpty(venta.ClienteDireccion))
+                    {
+                        <strong>Dirección:</strong> @venta.ClienteDireccion <br />
+                    }
+                    <strong>Fecha:</strong> @venta.Fecha.ToString("dd/MM/yyyy HH:mm")
+                </div>
+                <div class="card-body">
+                    <h6>Detalle de Productos:</h6>
+                    <ul class="list-group mb-3">
+                        @if (venta.Items.Count == 0)
+                        {
+                            <li class="list-group-item text-muted">No hay ítems en esta venta.</li>
+                        }
+                        else
+                        {
+                            @foreach (var item in venta.Items)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        @* Mostrar el string Producto y la Cantidad *@
+                                        <strong>@item.Producto</strong>
+                                    </div>
+                                    <span class="badge bg-secondary rounded-pill">Cantidad: @item.Cantidad</span>
+                                </li>
+                            }
+                        }
+                    </ul>
+                    <div class="d-flex justify-content-end mt-2">
+                        <strong class="h4">Total Venta: @venta.TotalVenta</strong>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-primary" @onclick="() => DescargarFactura(venta.Id)">Descargar Factura</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<VentaHistorialDTO>? ventas;
+    private string? errorMessage;
+    private int mesSeleccionado = DateTime.Now.Month;
+    private int anioSeleccionado = DateTime.Now.Year;
+    private List<VentaHistorialDTO>? ventasFiltradas;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            ventas = await SalesService.GetHistorialAsync();
+            errorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al cargar el historial de ventas: {ex.Message}";
+            Console.Error.WriteLine(errorMessage); // Esto enviará el error a la consola del navegador
+            // ¡IMPORTANTE! Comenta o elimina la siguiente línea para que ventas se quede null
+            // y veas si el mensaje de "Cargando..." persiste.
+            ventas = new List<VentaHistorialDTO>();
+            FiltrarMetricas();
+        }
+    }
+
+    private void FiltrarMetricas()
+    {
+        if (ventas != null)
+        {
+            ventasFiltradas = ventas
+                .Where(v => v.Fecha.Month == mesSeleccionado
+                         && v.Fecha.Year == anioSeleccionado)
+                .ToList();
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Cargar el script dinámicamente
+            await JS.InvokeVoidAsync("eval", @"
+                window.pdfDownloader = (filename, dotNetStreamReference) => {
+                    dotNetStreamReference.arrayBuffer().then(buffer => {
+                        const blob = new Blob([buffer], { type: 'application/pdf' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = filename ?? 'download.pdf';
+                        a.click();
+                        a.remove();
+                        URL.revokeObjectURL(url);
+                    });
+                };
+            ");
+        }
+    }
+    private async Task DescargarFactura(int ventaId)
+    {
+        try
+        {
+            // Llamás directamente al endpoint que genera el PDF desde el backend
+            var response = await Http.GetAsync($"api/v1/Sales/factura/pdf/{ventaId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsByteArrayAsync();
+                var nombreArchivo = $"factura_{ventaId}.pdf";
+
+                // Usamos DotNetStreamReference para pasar el stream a JS
+                using var streamRef = new DotNetStreamReference(stream: new MemoryStream(content));
+
+                // Invocamos la función JS definida inline en OnAfterRenderAsync
+                await JS.InvokeVoidAsync("pdfDownloader", nombreArchivo, streamRef);
+            }
+            else
+            {
+                Console.WriteLine($"Error al descargar la factura: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Excepción: {ex.Message}");
+        }
+    }
+
+   
+
+}

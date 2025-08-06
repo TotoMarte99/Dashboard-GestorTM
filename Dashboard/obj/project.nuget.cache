@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "+hcrsAxe1fQ=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\Dashboard.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\tomas\\.nuget\\packages\\microsoft.aspnetcore.spaservices.extensions\\6.0.1\\microsoft.aspnetcore.spaservices.extensions.6.0.1.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\6.0.0\\microsoft.extensions.fileproviders.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\microsoft.extensions.fileproviders.physical\\6.0.0\\microsoft.extensions.fileproviders.physical.6.0.0.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\microsoft.extensions.filesystemglobbing\\6.0.0\\microsoft.extensions.filesystemglobbing.6.0.0.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\tailwind.extensions.aspnetcore\\1.0.0\\tailwind.extensions.aspnetcore.1.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

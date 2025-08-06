@@ -1,0 +1,15 @@
+﻿@inject AuthService AuthService
+@rendermode InteractiveServer
+
+@* Este componente no renderiza nada visible, solo inicializa el AuthService *@
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Solo inicializamos el servicio en la primera renderización
+            // Esto se ejecuta cuando Blazor ya está conectado al cliente.
+            await AuthService.InitializeAsync();
+        }
+    }
+}
