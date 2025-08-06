@@ -1,0 +1,392 @@
+﻿@page "/historial-ordenes"
+@inject MachineOrderService MachineOrderService
+@inject IJSRuntime JSRuntime
+@inject AuthService AuthService
+@inject HttpClient Http
+@inject IJSRuntime JS
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<h4>Filtro por Mes y Año</h4>
+<div class="row mb-4">
+    <div class="col-md-3">
+        <label>Mes</label>
+        <InputNumber @bind-Value="mesSeleccionado" class="form-control" Min="1" Max="12" />
+    </div>
+    <div class="col-md-3">
+        <label>Año</label>
+        <InputNumber @bind-Value="anioSeleccionado" class="form-control" Min="2020" Max="@DateTime.Now.Year" />
+    </div>
+    <div class="col-md-3 d-flex align-items-end">
+        <button class="btn btn-primary" @onclick="FiltrarMetricas">Filtrar</button>
+    </div>
+</div>
+
+@if (ordersFiltradas != null && ordersFiltradas.Any())
+{
+    <hr />
+    <h4>Métricas de Reparaciones (@mesSeleccionado/@anioSeleccionado)</h4>
+    <div class="row mt-3">
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Órdenes Totales</h5>
+                    <p class="display-6">@ordersFiltradas.Count</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Ingresos Finales</h5>
+                    <p class="display-6 text-success">
+                        @(ordersFiltradas.Where(o => o.CostoFinal.HasValue).Any()
+                            ? ordersFiltradas.Where(o => o.CostoFinal.HasValue).Sum(o => o.CostoFinal.Value).ToString("C")
+                            : "N/A")
+                                
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>No hay datos para el período seleccionado.</p>
+}
+
+<br/>
+
+
+
+@if (orders != null && orders.Any())
+{
+    <hr />
+    <h4>Métricas del Taller</h4>
+
+    <div class="row mt-3">
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Órdenes Totales</h5>
+                    <p class="display-6">@orders.Count</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Pendientes</h5>
+                    <p class="display-6 text-warning">
+                        @orders.Count(o => o.Estado == "Pendiente")
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">En Reparación</h5>
+                    <p class="display-6 text-info">
+                        @orders.Count(o => o.Estado == "En reparación")
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Finalizadas</h5>
+                    <p class="display-6 text-success">
+                        @orders.Count(o => o.Estado == "Finalizado")
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Ingresos Estimados</h5>
+                    <p class="display-6 text-primary">
+                        @(orders != null && orders.Any(o => o.CostoFinal.HasValue)
+                                ? orders.Where(o => o.CostoFinal.HasValue)
+                                .Sum(o => o.CostoFinal.Value)
+                                .ToString("C")
+                                : "$ 0,00 ")
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Promedio Costo Final</h5>
+                    <p class="display-6 text-secondary">
+                        @(orders.Where(o => o.CostoFinal.HasValue).Any()
+                                ? orders.Where(o => o.CostoFinal.HasValue)
+                                .Average(o => o.CostoFinal.Value)
+                                .ToString("C")
+                                : "N/A")
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<br/>
+<br/>
+
+<h3>Historial de Órdenes de Reparación</h3>
+
+@if (!AuthService.IsAuthenticated)
+{
+    <div class="alert alert-warning">Debe iniciar sesión para ver el historial de órdenes.</div>
+}
+else
+{
+    @if (orders == null)
+    {
+        <p><em>Cargando órdenes...</em></p>
+    }
+    else
+    {
+        @if (orders.Any())
+        {
+            @foreach (var orden in orders)
+            {
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Orden ID: @orden.Id - @orden.Nombre @orden.Apellido</h5>
+                        <p class="card-text">
+                            <strong>Fecha de Ingreso:</strong> @orden.FechaIngreso.ToShortDateString()<br />
+                            <strong>Máquina:</strong> @orden.Marca @orden.Modelo<br />
+                            <strong>Estado:</strong> @orden.Estado<br/>
+                            <strong>Costo Final:</strong> @orden.CostoFinal
+                        </p>
+
+                        <button class="btn btn-sm btn-info" @onclick="() => SeleccionarOrdenParaEditar(orden)">
+                            Editar
+                        </button>
+
+                        <button class="btn btn-sm btn-primary" @onclick="() => GenerarPdfDeOrden(orden.Id)">
+                            Descargar PDF
+                        </button>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="alert alert-info">No hay órdenes de reparación registradas.</div>
+        }
+    }
+}
+@if (ordenSeleccionada != null)
+{
+    <h4>Editar Orden ID: @ordenSeleccionada.Id</h4>
+    <EditForm Model="@ordenSeleccionada" OnValidSubmit="ActualizarOrden">
+        <DataAnnotationsValidator />
+        <ValidationSummary class="alert alert-danger mb-3" />
+
+        <div class="card p-3 mb-3">
+            <h5 class="card-title">Datos de Edición</h5>
+            <div class="mb-3">
+                <label for="estado" class="form-label">Estado:</label>
+                <InputSelect id="estado" class="form-select" @bind-Value="ordenSeleccionada.Estado">
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="En reparación">En reparación</option>
+                    <option value="Finalizado">Finalizado</option>
+                </InputSelect>
+            </div>
+            <div class="mb-3">
+                <label for="costoFinal" class="form-label">Costo Final:</label>
+                <InputNumber id="costoFinal" class="form-control" @bind-Value="ordenSeleccionada.CostoFinal" />
+            </div>
+            <div class="form-check mt-3">
+                <InputCheckbox id="descargarPdf" class="form-check-input" @bind-Value="descargarPdfAlGuardar" />
+                <label class="form-check-label" for="descargarPdf">Descargar PDF al guardar</label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">Guardar Cambios</button>
+        <button type="button" class="btn btn-secondary" @onclick="() => ordenSeleccionada = null">Cancelar</button>
+    </EditForm>
+}
+
+
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger mt-3">@errorMessage</div>
+}
+@if (!string.IsNullOrEmpty(mensajeExito))
+{
+    <div class="alert alert-success mt-3">@mensajeExito</div>
+}
+
+@code {
+    private List<MachinesOrder>? orders;
+    private string? errorMessage;
+    private string? mensajeExito;
+    private MachinesOrder? ordenSeleccionada;
+    private bool descargarPdfAlGuardar;
+    private int mesSeleccionado = DateTime.Now.Month;
+    private int anioSeleccionado = DateTime.Now.Year;
+
+    private List<MachinesOrder>? ordersFiltradas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await AuthService.InitializeAsync();
+        await CargarOrdenes();
+        FiltrarMetricas();
+    }
+
+    private void FiltrarMetricas()
+    {
+        if (orders != null)
+        {
+            ordersFiltradas = orders
+                .Where(o => o.FechaIngreso.Month == mesSeleccionado
+                         && o.FechaIngreso.Year == anioSeleccionado)
+                .ToList();
+        }
+    }
+    private async Task CargarOrdenes()
+    {
+        try
+        {
+            if (AuthService.IsAuthenticated)
+            {
+                orders = await MachineOrderService.GetOrderAsync();
+                errorMessage = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al cargar las órdenes de reparación: {ex.Message}";
+            Console.Error.WriteLine(errorMessage);
+            orders = new List<MachinesOrder>();
+        }
+    }
+
+    private void SeleccionarOrdenParaEditar(MachinesOrder orden)
+    {
+        ordenSeleccionada = new MachinesOrder
+            {
+                Id = orden.Id,
+                Estado = orden.Estado,
+                FechaEntrega = orden.FechaEntrega,
+                CostoFinal = orden.CostoFinal,
+            // Agrega otros campos si los necesitas en el formulario
+            };
+        mensajeExito = null;
+    }
+
+    private async Task ActualizarOrden()
+    {
+        if (ordenSeleccionada != null)
+        {
+            try
+            {
+                var dto = new MaOrderUpdateDTO
+                    {
+                        Estado = ordenSeleccionada.Estado,
+                        FechaEntrega = ordenSeleccionada.FechaEntrega,
+                        CostoFinal = ordenSeleccionada.CostoFinal
+                    };
+
+                await MachineOrderService.UpdateOrderAsync(ordenSeleccionada.Id, dto);
+
+                mensajeExito = "Orden actualizada con éxito.";
+                errorMessage = null;
+
+                // 1. Recarga la lista de órdenes desde la base de datos
+                await CargarOrdenes();
+
+                // 2. Si el checkbox está marcado, descarga el PDF después de recargar
+                if (descargarPdfAlGuardar)
+                {
+                    await GenerarPdfDeOrden(ordenSeleccionada.Id);
+                    descargarPdfAlGuardar = false; // Desactiva el checkbox
+                }
+
+                ordenSeleccionada = null; // Oculta el formulario
+            }
+            catch (UnauthorizedAccessException)
+            {
+                errorMessage = "Error: No tiene permiso para actualizar la orden.";
+            }
+            catch (Exception ex)
+            {
+                errorMessage = $"Error al actualizar la orden: {ex.Message}";
+            }
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Cargar el script dinámicamente
+            await JS.InvokeVoidAsync("eval", @"
+                window.pdfDownloader = (filename, dotNetStreamReference) => {
+                    dotNetStreamReference.arrayBuffer().then(buffer => {
+                        const blob = new Blob([buffer], { type: 'application/pdf' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = filename ?? 'download.pdf';
+                        a.click();
+                        a.remove();
+                        URL.revokeObjectURL(url);
+                    });
+                };
+            ");
+        }
+    }
+    private async Task GenerarPdfDeOrden(int ordenId)
+    {
+        try
+        {
+            var response = await Http.GetAsync($"api/v1/MaOrders/orden/pdf/{ordenId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsByteArrayAsync();
+                var nombreArchivo = $"orden{ordenId}.pdf";
+
+                using var streamRef = new DotNetStreamReference(stream: new MemoryStream(content));
+                await JS.InvokeVoidAsync("pdfDownloader", nombreArchivo, streamRef);
+
+                // 🔑 Traer la orden actualizada
+                var updatedOrden = await MachineOrderService.GetOrderByIdAsync(ordenId);
+                var ordenEnLista = orders?.FirstOrDefault(o => o.Id == ordenId);
+                if (ordenEnLista != null && updatedOrden != null)
+                {
+                    ordenEnLista.Estado = updatedOrden.Estado;
+                    ordenEnLista.CostoFinal = updatedOrden.CostoFinal;
+                }
+                StateHasChanged();
+            }
+            else
+            {
+                Console.WriteLine($"Error al descargar la orden de reparación: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Excepción: {ex.Message}");
+        }
+    }
+
+
+    
+}

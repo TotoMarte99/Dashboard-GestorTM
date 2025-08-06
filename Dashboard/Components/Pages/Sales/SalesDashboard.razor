@@ -1,0 +1,157 @@
+﻿@page "/ventas"
+@inject ProductService ProductService
+@inject SalesService SalesService
+@inject NavigationManager NavigationManager
+@inject AuthService AuthService
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+
+<h2>Registrar Venta</h2>
+
+<EditForm Model="@nuevaVenta" OnValidSubmit="RegistrarVenta" FormName="ventaForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="alert alert-danger mb-3" />
+
+    <div class="card p-3 mb-3">
+        <h5 class="card-title">Datos del Cliente</h5>
+        <div class="mb-3">
+            <label for="clienteNombre" class="form-label">Nombre Cliente:</label>
+            <InputText id="clienteNombre" class="form-control" @bind-Value="nuevaVenta.Cliente.Nombre" />
+            <ValidationMessage For="@(() => nuevaVenta.Cliente.Nombre)" class="text-danger" />
+        </div>
+        <div class="mb-3">
+            <label for="clienteNombre" class="form-label">Apellido Cliente:</label>
+            <InputText id="clienteNombre" class="form-control" @bind-Value="nuevaVenta.Cliente.Apellido" />
+            <ValidationMessage For="@(() => nuevaVenta.Cliente.Apellido)" class="text-danger" />
+        </div>
+        <div class="mb-3">
+            <label for="clienteTelefono" class="form-label">Teléfono Cliente:</label>
+            <InputText id="clienteTelefono" class="form-control" @bind-Value="nuevaVenta.Cliente.Telefono" />
+            <ValidationMessage For="@(() => nuevaVenta.Cliente.Telefono)" class="text-danger" />
+        </div>
+        <div class="mb-3">
+            <label for="clienteEmail" class="form-label">Email Cliente:</label>
+            <InputText id="clienteEmail" class="form-control" @bind-Value="nuevaVenta.Cliente.Email" />
+            <ValidationMessage For="@(() => nuevaVenta.Cliente.Email)" class="text-danger" />
+        </div>
+        <div class="mb-3">
+            <label for="clienteDireccion" class="form-label">Dirección Cliente:</label>
+            <InputText id="clienteDireccion" class="form-control" @bind-Value="nuevaVenta.Cliente.Direccion" />
+            <ValidationMessage For="@(() => nuevaVenta.Cliente.Direccion)" class="text-danger" />
+        </div>
+    </div>
+
+   
+
+    <div class="card p-3 mb-3">
+        <h5 class="card-title">Productos de la Venta</h5>
+        @if (!nuevaVenta.Items.Any())
+        {
+            <p class="text-muted">Aún no hay productos en esta venta. Haz clic en "Agregar Producto".</p>
+        }
+        @foreach (var item in nuevaVenta.Items)
+        {
+            <div class="d-flex mb-2 gap-2 align-items-center">
+                <div class="flex-grow-1">
+                    <InputSelect class="form-select" @bind-Value="item.ProductoId">
+                        <option value="0">-- Seleccionar producto --</option>
+                        @foreach (var prod in productos)
+                        {
+                            <option value="@prod.id">@prod.Marca - @prod.Modelo (Stock: @prod.Stock)</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="col-3">
+                    <input type="number" class="form-control" @bind="item.Cantidad" placeholder="Cantidad" min="1" />
+                    <ValidationMessage For="@(() => item.Cantidad)" class="text-danger small" />
+                </div>
+                <button class="btn btn-danger" type="button" @onclick="() => QuitarProducto(item)">🗑️</button>
+            </div>
+        }
+        <button class="btn btn-secondary mt-2" type="button" @onclick="AgregarProducto">+ Agregar Producto</button>
+    </div>
+
+    <button class="btn btn-success mt-4" type="submit">Registrar Venta</button>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(mensaje))
+{
+    <div class="alert @(mensaje.StartsWith("Error") ? "alert-danger" : "alert-info") mt-3">@mensaje</div>
+}
+
+@code {
+    private SaleDTO nuevaVenta = new SaleDTO();
+    private List<Product> productos = new(); 
+    private string? mensaje;
+
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        productos = await ProductService.GetProductsAsync();
+        nuevaVenta.Cliente = new ClienteDTO();
+        if (!nuevaVenta.Items.Any())
+        {
+            nuevaVenta.Items.Add(new SaleItemDTO());
+        }
+       
+    }
+
+    
+
+    private void AgregarProducto()
+    {
+        var newItem = new SaleItemDTO();
+        nuevaVenta.Items.Add(newItem);
+    }
+
+    private void QuitarProducto(SaleItemDTO item)
+    {
+        nuevaVenta.Items.Remove(item);
+        if (!nuevaVenta.Items.Any())
+        {
+            nuevaVenta.Items.Add(new SaleItemDTO());
+        }
+    }
+
+    // Este es el método que se llama cuando el formulario es válido
+    private async Task RegistrarVenta()
+    {
+        // Las validaciones de DataAnnotationsValidator ya se ejecutan automáticamente antes de este método.
+        // Las validaciones manuales que tenías son buenas para casos específicos.
+        if (nuevaVenta.Items.Any(item => item.ProductoId == 0))
+        {
+            mensaje = "Error: Por favor, asegúrate de seleccionar un producto válido (no '-- Seleccionar producto --') para CADA ítem de la venta.";
+            Console.WriteLine("RegistrarVenta: Validación manual fallida (ProductoId = 0).");
+            return;
+        }
+        if (!nuevaVenta.Items.Any())
+        {
+            mensaje = "Error: La venta debe contener al menos un producto.";
+            Console.WriteLine("RegistrarVenta: Validación manual fallida (No hay ítems).");
+            return;
+        }
+
+        try
+        {
+            // ¡Asegúrate de que tu SalesService.CreateSaleAsync acepta VentaFormDTO!
+            // (Ya lo vimos en la sección de SalesService del paso anterior)
+            await SalesService.CreateSaleAsync(nuevaVenta);
+            mensaje = "Venta registrada con éxito.";
+            Console.WriteLine("Venta registrada con éxito.");
+
+            // Reiniciar el formulario para una nueva venta
+            nuevaVenta = new SaleDTO(); // Reinicializa VentaFormDTO, lo que también reinicializa Cliente e Items
+            // nuevaVenta.Fecha = DateTime.Now; // Si quieres pre-establecer la fecha en el frontend (aunque la API la ignorará)
+            nuevaVenta.Items.Add(new SaleItemDTO()); // Asegurar al menos un ítem vacío para empezar
+            productos = await ProductService.GetProductsAsync(); // Recargar productos si es necesario
+
+            StateHasChanged(); // Forzar la actualización de la UI
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al registrar la venta: Verifique que todos los campos esten completos";
+            Console.WriteLine($"EXCEPCIÓN en RegistrarVenta: {ex.Message}");
+        }
+    }
+}

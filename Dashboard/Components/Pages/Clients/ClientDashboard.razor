@@ -1,0 +1,285 @@
+﻿@page "/clientes"
+@using Dashboard.Services
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@inject ClientService ClientService
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject SalesService SalesService
+
+<h2>Gestión de Clientes</h2>
+<div class="d-flex align-items-center mb-3">
+    <button class="btn btn-primary me-3" @onclick="NewCliente">Agregar Cliente</button>
+    <input type="text" class="form-control w-25" placeholder="Buscar por nombre..."
+           @bind="searchTerm" @bind:event="oninput" />
+</div>
+
+@if (clientes == null)
+{
+    <p><em>Cargando clientes...</em></p>
+}
+else if (!AuthService.IsAuthenticated)
+{
+}
+else
+{
+    <div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Telefono</th>
+                    <th>Direccion</th>
+                    <th>Email</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cliente in clientes.Where(p => string.IsNullOrWhiteSpace(searchTerm) ||
+               (p.Nombre != null && p.Apellido.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))))
+                {
+                 <tr>
+                    <td>@cliente.Id</td>
+                    <td>@cliente.Nombre</td>
+                    <td>@cliente.Apellido</td>
+                    <td>@cliente.Telefono</td>
+                    <td>@cliente.Direccion</td>
+                    <td>@cliente.Email</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" @onclick="() => EditClient(cliente)">✏️</button>
+                    </td>
+                   </tr>
+
+                }
+            </tbody>
+        </table>
+
+    </div>
+}
+
+
+
+@if (showForm)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <EditForm EditContext="editContext" OnValidSubmit="SaveClient">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Nuevo Cliente</h5>
+                        <button type="button" class="btn-close" aria-label="Close" @onclick="CloseModal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <label>ID</label>
+                        <input class="form-control mb-2" @bind="formClients.Id" placeholder="Marca" />
+                        <label>Nombre</label>
+                        <input class="form-control mb-2" @bind="formClients.Nombre" placeholder="Marca" />
+                        <label>Apellido</label>
+                        <input class="form-control mb-2" @bind="formClients.Apellido" placeholder="Modelo" />
+                        <label>Telefono</label>
+                        <input class="form-control mb-2" @bind="formClients.Telefono" placeholder="Tipo" />
+                        <label>Direccion</label>
+                        <input class="form-control mb-2" @bind="formClients.Direccion" placeholder="Precio" />
+                        <label>Email</label>
+                        <input class="form-control mb-2" @bind="formClients.Email" placeholder="Precio Venta" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                        <button type="button" class="btn btn-secondary" @onclick="CloseModal">Cancelar</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="modal show d-block" tabindex="-1" style="background:rgba(0,0,0,0.5)">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Acceso denegado</h5>
+                </div>
+                <div class="modal-body">
+                    <p>@errorMessage</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" @onclick="ClearErrorMessage">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+@code {
+    private List<ClienteDTO>? clientes;
+    private ClienteDTO formClients = new();
+    private bool showForm = false;
+    private string? errorMessage;
+    private string? feedbackMessage;
+    private bool isFeedbackSuccess;
+    private EditContext? editContext;
+    private System.Timers.Timer? refreshTimer;
+    
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadClientesAsync();
+        refreshTimer = new System.Timers.Timer(60000);
+        refreshTimer.Elapsed += async (sender, args) =>
+        {
+            await InvokeAsync(async () =>
+            {
+                await LoadClientesAsync();
+                StateHasChanged();
+            });
+        };
+        refreshTimer.Start();
+
+        if (!AuthService.IsAuthenticated)
+        {
+            Console.WriteLine("Products.razor: No autenticado después de InitializeAsync. Redirigiendo al login.");
+            await Task.Delay(2000);
+            NavigationManager.NavigateTo("/");
+            return;
+        }
+        try
+        {
+            clientes = await ClientService.GetClientAsync();
+        }
+        catch (HttpRequestException httpEx)
+        {
+            Console.WriteLine($"Products.razor: HttpRequestException al cargar productos. Estado: {httpEx.StatusCode}");
+
+            if (httpEx.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+                httpEx.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            {
+                AuthService.Logout();
+                Console.WriteLine("Products.razor: API devolvió Unauthorized/Forbidden. Redirigiendo al login.");
+                NavigationManager.NavigateTo("/");
+            }
+            else
+            {
+                Console.WriteLine($"Products.razor: Otro error HTTP: {httpEx.Message}");
+            }
+        }
+        catch (UnauthorizedAccessException)
+        {
+            AuthService.Logout();
+            Console.WriteLine("Products.razor: Capturada UnauthorizedAccessException. Redirigiendo al login.");
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Products.razor: Error general al cargar productos: {ex.Message}");
+        }
+
+    }
+
+
+
+    private async Task CloseModal()
+    {
+        showForm = false;
+        feedbackMessage = null;
+        await Task.Yield();
+    }
+
+    private async Task LoadClientesAsync()
+    {
+        try
+        {
+            clientes = await ClientService.GetClientAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error cargando clientes: {ex.Message}");
+        }
+    }
+
+    private string searchTerm = string.Empty;
+
+
+    private void ClearErrorMessage()
+    {
+        errorMessage = null;
+    }
+
+
+
+    private async Task NewCliente()
+    {
+        formClients = new ClienteDTO();
+        showForm = true;
+        editContext = new EditContext(formClients);
+        feedbackMessage = null;
+        isFeedbackSuccess = false;
+        await Task.Yield();
+    }
+
+    private void EditClient(ClienteDTO cliente)
+    {
+        formClients = new ClienteDTO
+            {
+                Id = cliente.Id,
+                Nombre = cliente.Nombre,
+                Apellido = cliente.Apellido,
+                Telefono = cliente.Telefono,
+                Email = cliente.Email,
+                Direccion = cliente.Direccion,
+               
+            };
+        showForm = true;
+        editContext = new EditContext(formClients);
+        feedbackMessage = null;
+        isFeedbackSuccess = false;
+    }
+
+    private async Task SaveClient()
+    {
+        try
+        {
+            if (formClients.Id == 0)
+                await ClientService.AddClientAsync(formClients);
+            else
+                await ClientService.UpdateClientAsync(formClients);
+
+            await LoadClientesAsync();
+            showForm = false;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al guardar: {ex.Message}");
+        }
+    }
+
+    private async Task DeletelClient(int id)
+    {
+        await ClientService.DeleteClientAsync(id);
+        await LoadClientesAsync();
+    }
+
+    private void CancelForm()
+    {
+        showForm = false;
+        formClients = new ClienteDTO();
+    }
+
+
+}
+
+
+
+

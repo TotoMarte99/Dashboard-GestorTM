@@ -1,0 +1,318 @@
+﻿@page "/dashboard"
+@using Dashboard.Services
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@inject ProductService ProductService
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject SalesService SalesService
+
+<h2>Gestión de Productos</h2>
+<div class="d-flex align-items-center mb-3">
+    <button class="btn btn-primary me-3" @onclick="NewProduct">Agregar Producto</button>
+    <input type="text" class="form-control w-25" placeholder="Buscar por nombre..."
+           @bind="searchTerm" @bind:event="oninput" />
+</div>
+
+@if (products == null)
+{
+    <p><em>Cargando productos...</em></p>
+}
+else if (!AuthService.IsAuthenticated) 
+{
+}
+else
+{
+    <div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Producto</th>
+                    <th>Modelo</th>
+                    <th>Tipo</th>
+                    <th>Precio</th>
+                    <th>Precio Venta</th>
+                    <th>Stock</th>
+                    <th>Stock Critico</th>
+                    <th>Fecha Ingreso</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in products.Where(p =>
+               string.IsNullOrWhiteSpace(searchTerm) ||
+               (p.Marca != null && p.Marca.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) ||
+               (p.Modelo != null && p.Modelo.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) ||
+               (p.Tipo != null && p.Tipo.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))))
+                {
+                    <tr class="@(product.Stock < 3 ? "table-danger" : "")">
+
+                        <td>@product.id</td>
+                        <td>@product.Marca</td>
+                        <td>@product.Modelo</td>
+                        <td>@product.Tipo</td>
+                        <td>@product.Precio.ToString("C")</td>
+                        <td>@product.PrecioVenta.ToString("C")</td>
+                        <td>@product.Stock</td>
+                        <td>
+                            @product.StockCritico
+
+                            @if (product.Stock < 3)
+                            {
+                                <div class="alert alert-danger mt-2 p-1 text-center">
+                                    Stock Critico 
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert-success alert-success mt-2 p-1 text-center">
+                                    Stock Optimo
+                                </div>
+                            }
+
+                        </td>
+                        <td>@product.FechaIngreso.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" @onclick="() => EditProduct(product)">✏️</button>
+                            <button class="btn btn-danger btn-sm" @onclick="() => DeleteProduct(product.id)">🗑️</button>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+}
+
+
+
+@if (showForm)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <EditForm EditContext="editContext" OnValidSubmit="SaveProduct">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Nuevo Producto</h5>
+                        <button type="button" class="btn-close" aria-label="Close" @onclick="CloseModal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <label>Producto</label>
+                        <input class="form-control mb-2" @bind="formProduct.Marca" placeholder="Marca" />
+                        <label>Modelo</label>
+                        <input class="form-control mb-2" @bind="formProduct.Modelo" placeholder="Modelo" />
+                        <label>Tipo de Máquina / Producto</label>
+                        <input class="form-control mb-2" @bind="formProduct.Tipo" placeholder="Tipo" />
+                        <label>Precio de Compra</label>
+                        <input class="form-control mb-2" type="number" @bind="formProduct.Precio" placeholder="Precio" />
+                        <label>Precio de Venta</label>
+                        <input class="form-control mb-2" type="number" @bind="formProduct.PrecioVenta" placeholder="Precio Venta" />
+                        <label>Stock</label>
+                        <input class="form-control mb-2" @bind="formProduct.Stock" placeholder="Stock" />
+                        <label>Fecha Ingreso</label>
+                        <input class="form-control mb-2" type="date" @bind="formProduct.FechaIngreso"  />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                        <button type="button" class="btn btn-secondary" @onclick="CloseModal">Cancelar</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="modal show d-block" tabindex="-1" style="background:rgba(0,0,0,0.5)">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Acceso denegado</h5>
+                </div>
+                <div class="modal-body">
+                    <p>@errorMessage</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" @onclick="ClearErrorMessage">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+@code {
+    private List<Product>? products;
+    private Product formProduct = new();
+    private bool showForm = false;
+    private string? errorMessage;
+    private string? feedbackMessage; 
+    private bool isFeedbackSuccess;
+    private EditContext? editContext;
+    private System.Timers.Timer? refreshTimer;
+    private DateTime fechaActual = DateTime.Now;
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProductsAsync();
+       // refreshTimer = new System.Timers.Timer(60000);
+       // refreshTimer.Elapsed += async (sender, args) =>
+       // {
+       //     await InvokeAsync(async () =>
+       //     {
+       //         await LoadProductsAsync();
+       //        StateHasChanged(); 
+       //     });
+       // };
+      //  refreshTimer.Start();
+        
+        if (!AuthService.IsAuthenticated)
+        {
+            Console.WriteLine("Products.razor: No autenticado después de InitializeAsync. Redirigiendo al login.");
+            await Task.Delay(2000);
+            NavigationManager.NavigateTo("/dashboard");
+            return; 
+        }
+        try
+        {
+            products = await ProductService.GetProductsAsync();
+        }
+        catch (HttpRequestException httpEx) 
+        {
+            Console.WriteLine($"Products.razor: HttpRequestException al cargar productos. Estado: {httpEx.StatusCode}");
+
+            if (httpEx.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+                httpEx.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            {
+                AuthService.Logout(); 
+                Console.WriteLine("Products.razor: API devolvió Unauthorized/Forbidden. Redirigiendo al login.");
+                NavigationManager.NavigateTo("/");
+            }
+            else
+            {
+                Console.WriteLine($"Products.razor: Otro error HTTP: {httpEx.Message}");
+            }
+        }
+        catch (UnauthorizedAccessException) 
+        {
+            AuthService.Logout(); 
+            Console.WriteLine("Products.razor: Capturada UnauthorizedAccessException. Redirigiendo al login.");
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Products.razor: Error general al cargar productos: {ex.Message}");
+        }
+
+    }
+
+    private string searchTerm = string.Empty;
+
+
+    private async Task CloseModal()
+    {
+        showForm = false;
+        feedbackMessage = null;
+        await Task.Yield();
+    }
+
+    private async Task LoadProductsAsync()
+    {
+        try
+        {
+            products = await ProductService.GetProductsAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error cargando productos: {ex.Message}");
+        }
+    }
+
+
+
+    private void ClearErrorMessage()
+    {
+        errorMessage = null;
+    }
+
+
+
+    private async Task NewProduct()
+    {
+        formProduct = new Product();
+        showForm = true;
+        editContext = new EditContext(formProduct); 
+        feedbackMessage = null;
+        isFeedbackSuccess = false;
+        await Task.Yield();
+    }
+
+    private void EditProduct(Product product)
+    {
+        formProduct = new Product
+            {
+                id = product.id,
+                Marca = product.Marca,
+                Modelo = product.Modelo,
+                Tipo = product.Tipo,
+                Precio = product.Precio,
+                PrecioVenta = product.PrecioVenta,
+                Stock = product.Stock,
+                StockCritico = product.StockCritico,
+                FechaIngreso = product.FechaIngreso
+            };
+        showForm = true;
+        editContext = new EditContext(formProduct);
+        feedbackMessage = null;
+        isFeedbackSuccess = false;
+    }
+
+    private async Task SaveProduct()
+    {
+        try
+        {
+            if (formProduct.id == 0)
+                await ProductService.AddProductAsync(formProduct);
+            else
+                await ProductService.UpdateProductAsync(formProduct);
+
+            await LoadProductsAsync();
+            showForm = false;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al guardar: {ex.Message}");
+        }
+    }
+
+    private async Task DeleteProduct(int id)
+    {
+        await ProductService.DeleteProductAsync(id);
+        await LoadProductsAsync();
+    }
+
+    private void CancelForm()
+    {
+        showForm = false;
+        formProduct = new Product();
+    }
+
+
+}
+
+
+
+                    
+  
