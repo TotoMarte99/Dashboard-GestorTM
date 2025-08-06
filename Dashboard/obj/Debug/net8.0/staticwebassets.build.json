@@ -1,0 +1,743 @@
+{
+  "Version": 1,
+  "Hash": "vJd07oAKVnt6o35pKm25GKuGGsUIUXqEF3qp6PMi3Qs=",
+  "Source": "Dashboard",
+  "BasePath": "_content/Dashboard",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Dashboard\\wwwroot",
+      "Source": "Dashboard",
+      "ContentRoot": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\",
+      "BasePath": "_content/Dashboard",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\obj\\Debug\\net8.0\\scopedcss\\bundle\\Dashboard.styles.css",
+      "SourceId": "Dashboard",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "BasePath": "_content/Dashboard",
+      "RelativePath": "Dashboard#[.{fingerprint}]?.styles.css",
+      "AssetKind": "All",
+      "AssetMode": "CurrentProject",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ApplicationBundle",
+      "Fingerprint": "c2x2kx5a6x",
+      "Integrity": "HGRq7vhfjwTsZy/cVWTk9pjgqOkSdzl9hxk/7N1aSyw=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\obj\\Debug\\net8.0\\scopedcss\\bundle\\Dashboard.styles.css"
+    },
+    {
+      "Identity": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Dashboard.bundle.scp.css",
+      "SourceId": "Dashboard",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "BasePath": "_content/Dashboard",
+      "RelativePath": "Dashboard#[.{fingerprint}]!.bundle.scp.css",
+      "AssetKind": "All",
+      "AssetMode": "Reference",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ProjectBundle",
+      "Fingerprint": "c2x2kx5a6x",
+      "Integrity": "HGRq7vhfjwTsZy/cVWTk9pjgqOkSdzl9hxk/7N1aSyw=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Dashboard.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\app.css",
+      "SourceId": "Dashboard",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\",
+      "BasePath": "_content/Dashboard",
+      "RelativePath": "app#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "wyuika00v7",
+      "Integrity": "uJYMqfUl3g6jJLb26YQRbl2TjAnJlbcOPBncSERVj5M=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\app.css"
+    },
+    {
+      "Identity": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "SourceId": "Dashboard",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\",
+      "BasePath": "_content/Dashboard",
+      "RelativePath": "bootstrap/bootstrap.min#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "bpk8xqwxhs",
+      "Integrity": "z8OR40MowJ8GgK6P89Y+hiJK5+cclzFHzLhFQLL92bg=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Identity": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "SourceId": "Dashboard",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\",
+      "BasePath": "_content/Dashboard",
+      "RelativePath": "bootstrap/bootstrap.min.css#[.{fingerprint}]?.map",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "8inm30yfxf",
+      "Integrity": "gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Identity": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\favicon.png",
+      "SourceId": "Dashboard",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\",
+      "BasePath": "_content/Dashboard",
+      "RelativePath": "favicon#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ifv42okdf2",
+      "Integrity": "4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\favicon.png"
+    },
+    {
+      "Identity": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\pdfDownloader.js",
+      "SourceId": "Dashboard",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\",
+      "BasePath": "_content/Dashboard",
+      "RelativePath": "pdfDownloader#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "eqykhh4egw",
+      "Integrity": "Kr40wbJv1o+sKodDxZuRO+lKB9lVpFr7DKAtd7nTo2g=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\pdfDownloader.js"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "app.css",
+      "AssetFile": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\app.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4725"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"uJYMqfUl3g6jJLb26YQRbl2TjAnJlbcOPBncSERVj5M=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 03 Aug 2025 21:24:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-uJYMqfUl3g6jJLb26YQRbl2TjAnJlbcOPBncSERVj5M="
+        }
+      ]
+    },
+    {
+      "Route": "app.wyuika00v7.css",
+      "AssetFile": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\app.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4725"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"uJYMqfUl3g6jJLb26YQRbl2TjAnJlbcOPBncSERVj5M=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 03 Aug 2025 21:24:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "wyuika00v7"
+        },
+        {
+          "Name": "label",
+          "Value": "app.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-uJYMqfUl3g6jJLb26YQRbl2TjAnJlbcOPBncSERVj5M="
+        }
+      ]
+    },
+    {
+      "Route": "bootstrap/bootstrap.min.bpk8xqwxhs.css",
+      "AssetFile": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "162720"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"z8OR40MowJ8GgK6P89Y+hiJK5+cclzFHzLhFQLL92bg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Jun 2025 15:03:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "bpk8xqwxhs"
+        },
+        {
+          "Name": "label",
+          "Value": "bootstrap/bootstrap.min.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-z8OR40MowJ8GgK6P89Y+hiJK5+cclzFHzLhFQLL92bg="
+        }
+      ]
+    },
+    {
+      "Route": "bootstrap/bootstrap.min.css",
+      "AssetFile": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "162720"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"z8OR40MowJ8GgK6P89Y+hiJK5+cclzFHzLhFQLL92bg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Jun 2025 15:03:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-z8OR40MowJ8GgK6P89Y+hiJK5+cclzFHzLhFQLL92bg="
+        }
+      ]
+    },
+    {
+      "Route": "bootstrap/bootstrap.min.css.8inm30yfxf.map",
+      "AssetFile": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "449111"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Jun 2025 15:03:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "8inm30yfxf"
+        },
+        {
+          "Name": "label",
+          "Value": "bootstrap/bootstrap.min.css.map"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ="
+        }
+      ]
+    },
+    {
+      "Route": "bootstrap/bootstrap.min.css.map",
+      "AssetFile": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "449111"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Jun 2025 15:03:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ="
+        }
+      ]
+    },
+    {
+      "Route": "Dashboard.bundle.scp.css",
+      "AssetFile": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Dashboard.bundle.scp.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5901"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HGRq7vhfjwTsZy/cVWTk9pjgqOkSdzl9hxk/7N1aSyw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Jun 2025 15:26:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-HGRq7vhfjwTsZy/cVWTk9pjgqOkSdzl9hxk/7N1aSyw="
+        }
+      ]
+    },
+    {
+      "Route": "Dashboard.c2x2kx5a6x.bundle.scp.css",
+      "AssetFile": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Dashboard.bundle.scp.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5901"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HGRq7vhfjwTsZy/cVWTk9pjgqOkSdzl9hxk/7N1aSyw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Jun 2025 15:26:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "c2x2kx5a6x"
+        },
+        {
+          "Name": "label",
+          "Value": "Dashboard.bundle.scp.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-HGRq7vhfjwTsZy/cVWTk9pjgqOkSdzl9hxk/7N1aSyw="
+        }
+      ]
+    },
+    {
+      "Route": "Dashboard.c2x2kx5a6x.styles.css",
+      "AssetFile": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\obj\\Debug\\net8.0\\scopedcss\\bundle\\Dashboard.styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5901"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HGRq7vhfjwTsZy/cVWTk9pjgqOkSdzl9hxk/7N1aSyw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Jun 2025 15:26:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "c2x2kx5a6x"
+        },
+        {
+          "Name": "label",
+          "Value": "Dashboard.styles.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-HGRq7vhfjwTsZy/cVWTk9pjgqOkSdzl9hxk/7N1aSyw="
+        }
+      ]
+    },
+    {
+      "Route": "Dashboard.styles.css",
+      "AssetFile": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\obj\\Debug\\net8.0\\scopedcss\\bundle\\Dashboard.styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5901"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HGRq7vhfjwTsZy/cVWTk9pjgqOkSdzl9hxk/7N1aSyw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Jun 2025 15:26:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-HGRq7vhfjwTsZy/cVWTk9pjgqOkSdzl9hxk/7N1aSyw="
+        }
+      ]
+    },
+    {
+      "Route": "favicon.ifv42okdf2.png",
+      "AssetFile": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\favicon.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1148"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Jun 2025 15:03:46 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ifv42okdf2"
+        },
+        {
+          "Name": "label",
+          "Value": "favicon.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg="
+        }
+      ]
+    },
+    {
+      "Route": "favicon.png",
+      "AssetFile": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\favicon.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1148"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Jun 2025 15:03:46 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-4mWsDy3aHl36ZbGt8zByK7Pvd4kRUoNgTYzRnwmPHwg="
+        }
+      ]
+    },
+    {
+      "Route": "pdfDownloader.eqykhh4egw.js",
+      "AssetFile": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\pdfDownloader.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "511"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Kr40wbJv1o+sKodDxZuRO+lKB9lVpFr7DKAtd7nTo2g=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 24 Jul 2025 10:31:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "eqykhh4egw"
+        },
+        {
+          "Name": "label",
+          "Value": "pdfDownloader.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Kr40wbJv1o+sKodDxZuRO+lKB9lVpFr7DKAtd7nTo2g="
+        }
+      ]
+    },
+    {
+      "Route": "pdfDownloader.js",
+      "AssetFile": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\wwwroot\\pdfDownloader.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "511"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Kr40wbJv1o+sKodDxZuRO+lKB9lVpFr7DKAtd7nTo2g=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 24 Jul 2025 10:31:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Kr40wbJv1o+sKodDxZuRO+lKB9lVpFr7DKAtd7nTo2g="
+        }
+      ]
+    }
+  ]
+}

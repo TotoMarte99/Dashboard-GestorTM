@@ -1,0 +1,154 @@
+﻿@page "/sesion"
+
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+
+<h3 class="text-center mb-5">Bienvenido</h3>
+
+<div class="container">
+    <div class="row justify-content-center">
+
+        <!-- Login -->
+        <div class="col-md-6">
+            <div class="card mb-4" style="max-width: 700px;">
+                <div class="card-body">
+                    <h5>Iniciar Sesión</h5>
+                    <EditForm FormName="LoginForm" Model="loginModel" OnValidSubmit="HandleLogin">
+                        <DataAnnotationsValidator />
+
+                        <div class="mb-3">
+                            <label class="form-label">Usuario</label>
+                            <InputText class="form-control" @bind-Value="loginModel.Users" />
+                            <ValidationMessage For="@(() => loginModel.Users)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña</label>
+                            <InputText type="password" class="form-control" @bind-Value="loginModel.PassWord" />
+                            <ValidationMessage For="@(() => loginModel.PassWord)" />
+                        </div>
+
+
+
+                        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registro -->
+        <div class="col-md-6">
+            <div class="card mb-4" style="max-width: 700px;">
+                <div class="card-body">
+                    <h5>Registro de Nuevo Usuario</h5>
+                    <EditForm FormName="RegisterForm" Model="registerModel" OnValidSubmit="HandleRegister">
+                        <DataAnnotationsValidator />
+
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <InputText class="form-control" @bind-Value="registerModel.Users" />
+                            <ValidationMessage For="@(() => registerModel.Users)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña</label>
+                            <InputText type="password" class="form-control" @bind-Value="registerModel.PassWord" />
+                            <ValidationMessage For="@(() => registerModel.PassWord)" />
+                        </div>
+
+
+
+                        <button type="submit" class="btn btn-success">Registrar</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    private LoginModel loginModel = new();
+    private string? errorMessage;
+    private RegisterModel registerModel = new();
+    private string? message;
+    private bool isSuccess = false;
+
+   
+    private async Task HandleLogin()
+    {
+        errorMessage = null; 
+
+
+        try
+        {
+            var success = await AuthService.LoginAsync(loginModel.Users, loginModel.PassWord);
+
+            if (success)
+            {
+                // Si el login es exitoso, SÍ queremos que salga de "/" y vaya a "/dashboard"
+                NavigationManager.NavigateTo("/dashboard", forceLoad: true);
+            }
+            else
+            {
+                // Si el login falla, se queda en "/" y se muestra el mensaje de error
+                errorMessage = "Usuario o contraseña incorrectos.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al intentar iniciar sesión: {ex.Message}";
+            Console.Error.WriteLine($"Login error: {ex}");
+        }
+    }
+
+    private async Task HandleRegister()
+    {
+        message = null;
+        isSuccess = false;
+
+        try
+        {
+            var success = await AuthService.RegisterAsync(registerModel.Users, registerModel.PassWord);
+
+            if (success)
+            {
+                isSuccess = true;
+                message = "¡Registro exitoso! Ahora puedes iniciar sesión.";
+                await Task.Delay(2000);
+                NavigationManager.NavigateTo("/dashboard");
+            }
+            else
+            {
+                message = "El registro falló. Es posible que el usuario ya exista.";
+            }
+        }
+        catch (Exception ex)
+        {
+            message = $"Error al intentar registrar: {ex.Message}";
+        }
+    }
+
+    public class LoginModel
+    {
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "El nombre de usuario es obligatorio.")]
+        public string Users { get; set; } = string.Empty;
+
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "La contraseña es obligatoria.")]
+        public string PassWord { get; set; } = string.Empty;
+    }
+
+    public class RegisterModel
+    {
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "El usuario es obligatorio.")]
+        public string Users { get; set; } = string.Empty;
+
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "La contraseña es obligatoria.")]
+        [System.ComponentModel.DataAnnotations.MinLength(6, ErrorMessage = "La contraseña debe tener al menos 6 caracteres.")]
+        public string PassWord { get; set; } = string.Empty;
+    }
+}
+
+

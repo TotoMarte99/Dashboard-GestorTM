@@ -1,0 +1,68 @@
+﻿@inherits LayoutComponentBase
+@using Dashboard.Services
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+
+
+<Blazorise.ThemeProvider>
+
+<div class="page">
+    <div class="sidebar">
+            <NavMenu />
+
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+                <NavLink class="nav-link" href="/sesion">
+                    <button class="btn btn-outline-primary">Inicio Sesion</button>
+                </NavLink>
+                <NavLink class="nav-link" href="/sesion" @onclick="AuthService.Logout">
+                    <button class="btn btn-outline-danger">Cerrar Sesion</button>
+                </NavLink>
+            </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+
+
+<div id="blazor-error-ui">
+    No es posible cargar este formulario, inicie sesion.
+    <a href="/sesion" class="reload">Inicie Sesion</a>
+    <a class="dismiss">🗙</a>
+</div>
+</Blazorise.ThemeProvider>
+@code {
+    private bool _isAuthServiceInitialized = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !_isAuthServiceInitialized)
+        {
+            await AuthService.InitializeAsync();
+            _isAuthServiceInitialized = true;
+            Console.WriteLine("MainLayout.razor: AuthService.InitializeAsync called from OnAfterRenderAsync (global namespace).");
+
+            StateHasChanged(); // ✅ Forza redibujado luego de inicializar
+        }
+    }
+ 
+    protected override void OnInitialized()
+    {
+        AuthService.OnAuthChanged += CambiarEstado;
+    }
+
+    private void CambiarEstado()
+    {
+        InvokeAsync(StateHasChanged); 
+    }
+
+    public void Dispose()
+    {
+        AuthService.OnAuthChanged -= CambiarEstado;
+    }
+}

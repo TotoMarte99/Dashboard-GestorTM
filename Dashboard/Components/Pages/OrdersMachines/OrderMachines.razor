@@ -1,0 +1,112 @@
+﻿@page "/ordenes"
+@inject MachineOrderService MachineOrderService
+@inject NavigationManager NavigationManager
+@inject AuthService AuthService
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+<h2>Registrar Orden de Reparación</h2>
+
+@if (!AuthService.IsAuthenticated)
+{
+    <p class="alert alert-warning">Para registrar una orden, debe iniciar sesión.</p>
+}
+else
+{
+    <EditForm Model="@nuevaOrden" OnValidSubmit="RegistrarOrden" FormName="orderForm">
+        <DataAnnotationsValidator />
+        <ValidationSummary class="alert alert-danger mb-3" />
+
+        <div class="card p-3 mb-3">
+            <h5 class="card-title">Datos del Cliente</h5>
+            <div class="mb-3">
+                <label for="clienteNombre" class="form-label">Nombre del Cliente:</label>
+                <InputText id="clienteNombre" class="form-control" @bind-Value="nuevaOrden.Nombre" />
+                <ValidationMessage For="@(() => nuevaOrden.Nombre)" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="clienteApellido" class="form-label">Apellido del Cliente:</label>
+                <InputText id="clienteApellido" class="form-control" @bind-Value="nuevaOrden.Apellido" />
+                <ValidationMessage For="@(() => nuevaOrden.Apellido)" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="clienteTelefono" class="form-label">Teléfono del Cliente:</label>
+                <InputText id="clienteTelefono" class="form-control" @bind-Value="nuevaOrden.Telefono" />
+                <ValidationMessage For="@(() => nuevaOrden.Telefono)" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="clienteEmail" class="form-label">Email del Cliente:</label>
+                <InputText id="clienteEmail" class="form-control" @bind-Value="nuevaOrden.Email" />
+                <ValidationMessage For="@(() => nuevaOrden.Email)" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="clienteDireccion" class="form-label">Dirección del Cliente:</label>
+                <InputText id="clienteDireccion" class="form-control" @bind-Value="nuevaOrden.Direccion" />
+                <ValidationMessage For="@(() => nuevaOrden.Direccion)" class="text-danger" />
+            </div>
+        </div>
+
+        <div class="card p-3 mb-3">
+            <h5 class="card-title">Datos de la Máquina</h5>
+            <div class="mb-3">
+                <label for="maquinaMarca" class="form-label">Marca:</label>
+                <InputText id="maquinaMarca" class="form-control" @bind-Value="nuevaOrden.Marca" />
+                <ValidationMessage For="@(() => nuevaOrden.Marca)" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="maquinaModelo" class="form-label">Modelo:</label>
+                <InputText id="maquinaModelo" class="form-control" @bind-Value="nuevaOrden.Modelo" />
+                <ValidationMessage For="@(() => nuevaOrden.Modelo)" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="maquinaAccesorios" class="form-label">Accesorios (Opcional):</label>
+                <InputText id="maquinaAccesorios" class="form-control" @bind-Value="nuevaOrden.Accesorios" />
+            </div>
+            <div class="mb-3">
+                <label for="maquinaObservaciones" class="form-label">Observaciones (Opcional):</label>
+                <InputTextArea id="maquinaObservaciones" class="form-control" @bind-Value="nuevaOrden.Observaciones" />
+            </div>
+        </div>
+
+        <button class="btn btn-success mt-4" type="submit">Registrar Orden</button>
+    </EditForm>
+}
+
+@if (!string.IsNullOrEmpty(mensaje))
+{
+    <div class="alert @(mensaje.StartsWith("Error") ? "alert-danger" : "alert-success") mt-3">@mensaje</div>
+}
+
+@code {
+    private MachinesOrder nuevaOrden = new(); // Corregido el tipo de modelo
+    private string? mensaje;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Llama a este método para cargar el estado de autenticación
+        await AuthService.InitializeAsync();
+    }
+
+    private async Task RegistrarOrden()
+    {
+        try
+        {
+            // El método AddOrderAsync ya tiene el manejo de autenticación.
+            await MachineOrderService.AddOrderAsync(nuevaOrden);
+
+            mensaje = "Orden de reparación registrada con éxito.";
+
+            // Reiniciar el formulario para una nueva orden
+            nuevaOrden = new MachinesOrder();
+
+            StateHasChanged(); // Forzar la actualización de la UI
+        }
+        catch (UnauthorizedAccessException)
+        {
+            mensaje = "Error: No tiene permiso para realizar esta acción. Por favor, inicie sesión.";
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al registrar la orden: {ex.Message}";
+        }
+    }
+}
