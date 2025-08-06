@@ -1,0 +1,10 @@
+# Ignorar carpetas y archivos temporales de Visual Studio
+.vs/
+
+# Ignorar resultados de compilación y archivos temporales de .NET
+bin/
+obj/
+
+# Ignorar archivos del editor de Visual Studio
+*.user
+*.suo

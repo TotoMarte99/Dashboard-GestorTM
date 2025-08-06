@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\tomas\\source\\repos\\Dashboard\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A34024B7-6B60-45AD-B823-064299511263}|Dashboard\\Dashboard.csproj|c:\\users\\tomas\\source\\repos\\dashboard\\dashboard\\components\\pages\\ordersmachines\\ordershistorial.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A34024B7-6B60-45AD-B823-064299511263}|Dashboard\\Dashboard.csproj|solutionrelative:dashboard\\components\\pages\\ordersmachines\\ordershistorial.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A34024B7-6B60-45AD-B823-064299511263}|Dashboard\\Dashboard.csproj|c:\\users\\tomas\\source\\repos\\dashboard\\dashboard\\components\\pages\\saleshistorial.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A34024B7-6B60-45AD-B823-064299511263}|Dashboard\\Dashboard.csproj|solutionrelative:dashboard\\components\\pages\\saleshistorial.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A34024B7-6B60-45AD-B823-064299511263}|Dashboard\\Dashboard.csproj|c:\\users\\tomas\\source\\repos\\dashboard\\dashboard\\components\\pages\\sales\\salesdashboard.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A34024B7-6B60-45AD-B823-064299511263}|Dashboard\\Dashboard.csproj|solutionrelative:dashboard\\components\\pages\\sales\\salesdashboard.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A34024B7-6B60-45AD-B823-064299511263}|Dashboard\\Dashboard.csproj|c:\\users\\tomas\\source\\repos\\dashboard\\dashboard\\components\\pages\\ordersmachines\\ordershistorial.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A34024B7-6B60-45AD-B823-064299511263}|Dashboard\\Dashboard.csproj|solutionrelative:dashboard\\components\\pages\\ordersmachines\\ordershistorial.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A34024B7-6B60-45AD-B823-064299511263}|Dashboard\\Dashboard.csproj|c:\\users\\tomas\\source\\repos\\dashboard\\dashboard\\models\\saledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -29,10 +33,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A34024B7-6B60-45AD-B823-064299511263}|Dashboard\\Dashboard.csproj|c:\\users\\tomas\\source\\repos\\dashboard\\dashboard\\components\\pages\\clients\\clientdashboard.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A34024B7-6B60-45AD-B823-064299511263}|Dashboard\\Dashboard.csproj|solutionrelative:dashboard\\components\\pages\\clients\\clientdashboard.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A34024B7-6B60-45AD-B823-064299511263}|Dashboard\\Dashboard.csproj|c:\\users\\tomas\\source\\repos\\dashboard\\dashboard\\components\\pages\\saleshistorial.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A34024B7-6B60-45AD-B823-064299511263}|Dashboard\\Dashboard.csproj|solutionrelative:dashboard\\components\\pages\\saleshistorial.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A34024B7-6B60-45AD-B823-064299511263}|Dashboard\\Dashboard.csproj|c:\\users\\tomas\\source\\repos\\dashboard\\dashboard\\models\\ventahistorialdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -187,19 +187,6 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ProductDashboard.razor",
-              "DocumentMoniker": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\Components\\Pages\\Products\\ProductDashboard.razor",
-              "RelativeDocumentMoniker": "Dashboard\\Components\\Pages\\Products\\ProductDashboard.razor",
-              "ToolTip": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\Components\\Pages\\Products\\ProductDashboard.razor",
-              "RelativeToolTip": "Dashboard\\Components\\Pages\\Products\\ProductDashboard.razor",
-              "ViewState": "AgIAAGoAAAAAAAAAAAAIwHMAAABkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-13T15:07:16.751Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 9,
               "Title": "AuthInitializer.razor",
               "DocumentMoniker": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\Components\\AuthInitializer.razor",
@@ -230,14 +217,14 @@
               "RelativeDocumentMoniker": "Dashboard\\Components\\Pages\\Sales\\SalesDashboard.razor",
               "ToolTip": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\Components\\Pages\\Sales\\SalesDashboard.razor",
               "RelativeToolTip": "Dashboard\\Components\\Pages\\Sales\\SalesDashboard.razor",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAtwBEAAABAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAABAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-06-17T15:16:26.408Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "ClienteDTO.cs",
               "DocumentMoniker": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\Models\\ClienteDTO.cs",
               "RelativeDocumentMoniker": "Dashboard\\Models\\ClienteDTO.cs",
@@ -250,20 +237,46 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "OrdersHistorial.razor",
               "DocumentMoniker": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\Components\\Pages\\OrdersMachines\\OrdersHistorial.razor",
               "RelativeDocumentMoniker": "Dashboard\\Components\\Pages\\OrdersMachines\\OrdersHistorial.razor",
               "ToolTip": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\Components\\Pages\\OrdersMachines\\OrdersHistorial.razor",
               "RelativeToolTip": "Dashboard\\Components\\Pages\\OrdersMachines\\OrdersHistorial.razor",
-              "ViewState": "AgIAABYAAAAAAAAAAAAtwCgAAABAAAAAAAAAAA==",
+              "ViewState": "AgIAAG0AAAAAAAAAAAAtwCgAAABAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-08-03T15:21:54.238Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SalesHistorial.razor",
+              "DocumentMoniker": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\Components\\Pages\\SalesHistorial.razor",
+              "RelativeDocumentMoniker": "Dashboard\\Components\\Pages\\SalesHistorial.razor",
+              "ToolTip": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\Components\\Pages\\SalesHistorial.razor",
+              "RelativeToolTip": "Dashboard\\Components\\Pages\\SalesHistorial.razor",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAACoAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-07-01T09:53:00.092Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 6,
+              "Title": "ProductDashboard.razor",
+              "DocumentMoniker": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\Components\\Pages\\Products\\ProductDashboard.razor",
+              "RelativeDocumentMoniker": "Dashboard\\Components\\Pages\\Products\\ProductDashboard.razor",
+              "ToolTip": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\Components\\Pages\\Products\\ProductDashboard.razor",
+              "RelativeToolTip": "Dashboard\\Components\\Pages\\Products\\ProductDashboard.razor",
+              "ViewState": "AgIAAGoAAAAAAAAAAAAIwHMAAABkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-13T15:07:16.751Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "ClientDashboard.razor",
               "DocumentMoniker": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\Components\\Pages\\Clients\\ClientDashboard.razor",
               "RelativeDocumentMoniker": "Dashboard\\Components\\Pages\\Clients\\ClientDashboard.razor",
@@ -276,7 +289,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "SaleDTO.cs",
               "DocumentMoniker": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\Models\\SaleDTO.cs",
               "RelativeDocumentMoniker": "Dashboard\\Models\\SaleDTO.cs",
@@ -301,7 +314,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Product.cs",
               "DocumentMoniker": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\Models\\Product.cs",
               "RelativeDocumentMoniker": "Dashboard\\Models\\Product.cs",
@@ -323,19 +336,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-07-13T08:21:57.658Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "SalesHistorial.razor",
-              "DocumentMoniker": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\Components\\Pages\\SalesHistorial.razor",
-              "RelativeDocumentMoniker": "Dashboard\\Components\\Pages\\SalesHistorial.razor",
-              "ToolTip": "C:\\Users\\tomas\\source\\repos\\Dashboard\\Dashboard\\Components\\Pages\\SalesHistorial.razor",
-              "RelativeToolTip": "Dashboard\\Components\\Pages\\SalesHistorial.razor",
-              "ViewState": "AgIAAJkAAAAAAAAAAAAAAE4AAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-07-01T09:53:00.092Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Document",
